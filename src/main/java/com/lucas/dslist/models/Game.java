@@ -1,4 +1,4 @@
-package com.lucas.dslist.entities;
+package com.lucas.dslist.models;
 
 import jakarta.persistence.*;
 
@@ -10,21 +10,26 @@ public class Game {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String title;
-
     @Column(name = "game_year")
     private int year;
+
+    private String title;
     private String genre;
     private String platforms;
     private double score;
     private String imgUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String shortDescription;
+
+    @Column(columnDefinition = "TEXT")
     private String longDescription;
 
     public Game() {
     };
 
     public Game(String longDescription, String shortDescription, String imgUrl, double score, String platforms, String genre, int year, String title, long id) {
+
         this.longDescription = longDescription;
         this.shortDescription = shortDescription;
         this.imgUrl = imgUrl;
