@@ -25,10 +25,11 @@ public class GameService {
 
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll(){
-        List<Game> gameList = gameRepository.findAll();
-        List<GameMinDTO> dtoList = gameList.stream().
-                                            map(obj -> new GameMinDTO(obj)).
-                                            toList();
+        List<Game> list = gameRepository.findAll();
+        List<GameMinDTO> dtoList = list.
+                stream().
+                map(obj -> new GameMinDTO(obj)).
+                toList();
         return dtoList;
     }
 
