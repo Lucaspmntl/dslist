@@ -3,6 +3,8 @@ package com.lucas.dslist.controllers;
 import com.lucas.dslist.dto.GameDTO;
 import com.lucas.dslist.dto.GameMinDTO;
 import com.lucas.dslist.models.Game;
+import com.lucas.dslist.projections.GameMinProjection;
+import com.lucas.dslist.repositories.GameRepository;
 import com.lucas.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,4 +30,5 @@ public class GameController {
     public List<GameMinDTO> findAll(){
         return gameService.findAll();
     }
+
 }
