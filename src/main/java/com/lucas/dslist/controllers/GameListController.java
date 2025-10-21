@@ -3,6 +3,7 @@ package com.lucas.dslist.controllers;
 import com.lucas.dslist.dto.GameListDTO;
 import com.lucas.dslist.dto.GameMinDTO;
 import com.lucas.dslist.dto.GameDTO;
+import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.GameRepository;
 import com.lucas.dslist.services.GameListService;
@@ -34,4 +35,8 @@ public class GameListController {
         return gameService.findByList(listId);
     }
 
+    @GetMapping(value = "/{listId}")
+    public GameListDTO findById(@PathVariable Long listId){
+        return gameListService.findById(listId);
+    }
 }

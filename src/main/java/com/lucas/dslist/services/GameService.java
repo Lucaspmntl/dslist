@@ -3,6 +3,7 @@ package com.lucas.dslist.services;
 import com.lucas.dslist.dto.GameDTO;
 import com.lucas.dslist.dto.GameMinDTO;
 import com.lucas.dslist.models.Game;
+import com.lucas.dslist.projections.BelongingProjection;
 import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,14 @@ public class GameService {
 
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll(){
+
         List<Game> list = gameRepository.findAll();
         List<GameMinDTO> dtoList = list.
                 stream().
                 map(obj -> new GameMinDTO(obj)).
                 toList();
+
+        System.out.println();
         return dtoList;
     }
 

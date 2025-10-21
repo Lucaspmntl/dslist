@@ -2,15 +2,16 @@ package com.lucas.dslist.controllers;
 
 import com.lucas.dslist.dto.GameDTO;
 import com.lucas.dslist.dto.GameMinDTO;
+import com.lucas.dslist.dto.ReplacementDTO;
 import com.lucas.dslist.models.Game;
+import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.GameRepository;
+import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +22,12 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private GameListService gameListService
+
     @GetMapping
     public List<GameMinDTO> findAll(){
+        System.out.println();
         return gameService.findAll();
     }
 
@@ -31,5 +36,10 @@ public class GameController {
         return gameService.findById(id);
     }
 
+    @PostMapping(value = "replacement")
+    public ResponseEntity<ReplacementDTO> movePosition (@RequestBody ReplacementDTO replacementDTO){
+        //gameListService.moveGamePosition();
+    }
+    // verificar questao do dto e como montar um post
 
 }
