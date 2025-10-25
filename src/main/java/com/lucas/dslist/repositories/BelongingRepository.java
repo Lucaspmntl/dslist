@@ -16,9 +16,9 @@ public interface BelongingRepository extends JpaRepository<Belonging, Long> {
     Long findListByGameId(Long gameId);
 
     @Modifying
-    @Query(nativeQuery = true, value = "UPDATE TB_BELONGING\n" +
-            "SET GAME_ID = :gameId, POSITION = :position, LIST_ID = :listId\n" +
-            "WHERE LIST_ID = :listId AND GAME_ID = :gameId")
-    void updateBelongingTable(Long gameId, Long position, Long listId);
+    @Query(nativeQuery = true, value = "UPDATE tb_belonging " +
+            "SET position = :newPosition " +
+            "WHERE list_id = :listId AND game_id = :gameId")
+    void updateBelongingPosition(Long listId, Long gameId, Integer newPosition);
 
 }

@@ -9,7 +9,9 @@ import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.GameRepository;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,7 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
-    private GameListService gameListService
+    private GameListService gameListService;
 
     @GetMapping
     public List<GameMinDTO> findAll(){
@@ -36,10 +38,10 @@ public class GameController {
         return gameService.findById(id);
     }
 
-    @PostMapping(value = "replacement")
+    @PostMapping(value = "/replacement")
     public ResponseEntity<ReplacementDTO> movePosition (@RequestBody ReplacementDTO replacementDTO){
-        //gameListService.moveGamePosition();
+        gameListService.moveGamePosition(replacementDTO);
+        return ResponseEntity.ok(replacementDTO);
     }
-    // verificar questao do dto e como montar um post
 
 }

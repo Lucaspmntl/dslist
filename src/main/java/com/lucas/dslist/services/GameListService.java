@@ -2,6 +2,7 @@ package com.lucas.dslist.services;
 
 import com.lucas.dslist.dto.GameListDTO;
 import com.lucas.dslist.dto.GameMinDTO;
+import com.lucas.dslist.dto.ReplacementDTO;
 import com.lucas.dslist.models.Belonging;
 import com.lucas.dslist.models.BelongingPK;
 import com.lucas.dslist.models.Game;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -33,31 +36,28 @@ public class GameListService {
     BelongingRepository belongingRepository;
 
     @Transactional(readOnly = false)
-    public void moveGamePosition(int gameId, long listId, int positionTarget) {
+    public void moveGamePosition(ReplacementDTO moveObj) {
+        Long listId = moveObj.getListId();
+        Long targetPosition = moveObj.getTargetPosition();
+        Long sourcePosition = moveObj.getSourcePosition();
+
         List<GameMinProjection> list = gameRepository.searchByList(listId);
 
-        GameMinProjection game = list.stream().
-                filter(e -> e.getId() == gameId)
-                .findFirst()
-                .get();
+        GameMinProjection game = list.stream()
+            .filter(e -> e.getPosition() == sourcePosition.intValue())
+            .findFirst()
+            .get();
 
-        list.remove(game.getId());
-        list.add(positionTarget, game);
+        list.remove(game);
+        list.add(targetPosition.intValue(), game);
 
+        int max = Math.max(sourcePosition.intValue(), targetPosition.intValue());
+        int min = Math.min(sourcePosition.intValue(), targetPosition.intValue());
 
-        long max = Math.max(game.getId(), positionTarget);
-        long min = Math.min(game.getId(), positionTarget);
-
-
-        for (int i = (int) min; i <= max ; i++) {
-
-            int counter = 0;
-            Long newGameId = list.get(i).getId();
-            Long newGamePosition = Long.valueOf(list.get(i).getPosition());
-
-            belongingRepository.updateBelongingTable(newGameId, newGamePosition, listId);
+        for (int i = min; i <= max ; i++) {
+            Long targetGameId = list.get(i).getId();
+            belongingRepository.updateBelongingPosition(listId, targetGameId, i);
         }
-
     }
 
     @Transactional(readOnly = true)
