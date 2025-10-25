@@ -2,6 +2,7 @@ package com.lucas.dslist.services;
 
 import com.lucas.dslist.dto.GameListDTO;
 import com.lucas.dslist.dto.GameMinDTO;
+import com.lucas.dslist.dto.NewGameListDTO;
 import com.lucas.dslist.dto.ReplacementDTO;
 import com.lucas.dslist.models.Belonging;
 import com.lucas.dslist.models.BelongingPK;
@@ -34,6 +35,11 @@ public class GameListService {
 
     @Autowired
     BelongingRepository belongingRepository;
+
+    @Transactional
+    public void newList(NewGameListDTO dto){
+        gameListRepository.insertNewList(dto.getName());
+    }
 
     @Transactional(readOnly = false)
     public void moveGamePosition(ReplacementDTO moveObj) {

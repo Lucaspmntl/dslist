@@ -3,16 +3,16 @@ package com.lucas.dslist.controllers;
 import com.lucas.dslist.dto.GameListDTO;
 import com.lucas.dslist.dto.GameMinDTO;
 import com.lucas.dslist.dto.GameDTO;
+import com.lucas.dslist.dto.NewGameListDTO;
 import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.GameRepository;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +38,11 @@ public class GameListController {
     @GetMapping(value = "/{listId}")
     public GameListDTO findById(@PathVariable Long listId){
         return gameListService.findById(listId);
+    }
+
+    @PutMapping(value = "/new")
+    public ResponseEntity<NewGameListDTO> newList(@RequestBody NewGameListDTO dto){
+        gameListService.newList(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 }

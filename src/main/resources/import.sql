@@ -13,7 +13,7 @@ INSERT INTO tb_game (title, score, game_year, genre, platforms, img_url, short_d
 INSERT INTO tb_game (title, score, game_year, genre, platforms, img_url, short_description, long_description) VALUES ('Sonic CD', 4, 1993, 'Platform', 'Sega CD, PC', '/img/10.png', 'Uma aventura clássica do ouriço azul explorando o tempo e a velocidade.', 'Sonic CD é lembrado por seu sistema inovador de viagens no tempo, permitindo explorar versões passadas e futuras das fases. Com trilha sonora marcante e gameplay veloz, tornou-se um dos títulos mais distintos e queridos da franquia Sonic.');
 
 INSERT INTO tb_game_list (name) VALUES ('Aventura e RPG');
-INSERT INTO tb_game_list (name) VALUES ('Jogos de plataforma');
+INSERT INTO tb_game_list (name) VALUES ('Plataforma');
 
 INSERT INTO tb_belonging (list_id, game_id, position) VALUES (1, 1, 0);
 INSERT INTO tb_belonging (list_id, game_id, position) VALUES (1, 2, 1);
