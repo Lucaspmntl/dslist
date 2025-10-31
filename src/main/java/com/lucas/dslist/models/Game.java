@@ -1,6 +1,9 @@
 package com.lucas.dslist.models;
 
+import com.lucas.dslist.dto.NewGameDTO;
 import jakarta.persistence.*;
+import org.springframework.data.convert.DtoInstantiatingConverter;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "tb_game")
@@ -17,6 +20,7 @@ public class Game {
     private String genre;
     private String platforms;
     private double score;
+
     private String imgUrl;
 
     @Column(columnDefinition = "TEXT")
@@ -25,11 +29,9 @@ public class Game {
     @Column(columnDefinition = "TEXT")
     private String longDescription;
 
-    public Game() {
-    };
+    public Game() {};
 
     public Game(String longDescription, String shortDescription, String imgUrl, double score, String platforms, String genre, int year, String title, long id) {
-
         this.longDescription = longDescription;
         this.shortDescription = shortDescription;
         this.imgUrl = imgUrl;
@@ -40,6 +42,17 @@ public class Game {
         this.title = title;
         this.id = id;
     };
+
+    public Game(NewGameDTO dto){
+        this.longDescription = dto.getLongDescription();
+        this.shortDescription = dto.getShortDescription();
+        this.imgUrl = dto.getImgUrl();
+        this.score = dto.getScore();
+        this.platforms = dto.getPlatforms();
+        this.genre = dto.getGenre();
+        this.year = dto.getYear();
+        this.title = dto.getTitle();
+    }
 
     public long getId() {
         return id;

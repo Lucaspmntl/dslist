@@ -1,12 +1,7 @@
 package com.lucas.dslist.controllers;
 
-import com.lucas.dslist.dto.GameListDTO;
-import com.lucas.dslist.dto.GameMinDTO;
-import com.lucas.dslist.dto.GameDTO;
-import com.lucas.dslist.dto.NewGameListDTO;
+import com.lucas.dslist.dto.*;
 import com.lucas.dslist.models.GameList;
-import com.lucas.dslist.projections.GameMinProjection;
-import com.lucas.dslist.repositories.GameRepository;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +36,9 @@ public class GameListController {
     }
 
     @PutMapping(value = "/new")
-    public ResponseEntity<NewGameListDTO> newList(@RequestBody NewGameListDTO dto){
-        gameListService.newList(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    public ResponseEntity<GenericResponseDTO> newList(@RequestBody NewGameListDTO dto){
+        GameList newList = gameListService.newList(dto);
+        GenericResponseDTO response = new GenericResponseDTO("Lista criada com sucesso!", newList.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

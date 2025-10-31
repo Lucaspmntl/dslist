@@ -1,5 +1,7 @@
 package com.lucas.dslist.models;
 
+import com.lucas.dslist.dto.GameListDTO;
+import com.lucas.dslist.dto.NewGameListDTO;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -18,6 +20,15 @@ public class GameList {
     public GameList(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public GameList(GameListDTO dto){
+        this.id = dto.getId();
+        this.name = dto.getName();
+    }
+
+    public GameList(NewGameListDTO dto){
+        this.name = dto.getName();
     }
 
     public Long getId() {

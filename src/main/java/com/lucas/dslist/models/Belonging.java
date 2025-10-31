@@ -1,9 +1,6 @@
 package com.lucas.dslist.models;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ public class Belonging {
 
     @EmbeddedId
     private BelongingPK id = new BelongingPK();
+
     private Integer position;
 
     public Belonging(){}

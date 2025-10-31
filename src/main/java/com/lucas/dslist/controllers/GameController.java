@@ -1,15 +1,9 @@
 package com.lucas.dslist.controllers;
 
-import com.lucas.dslist.dto.GameDTO;
-import com.lucas.dslist.dto.GameMinDTO;
-import com.lucas.dslist.dto.ReplacementDTO;
+import com.lucas.dslist.dto.*;
 import com.lucas.dslist.models.Game;
-import com.lucas.dslist.models.GameList;
-import com.lucas.dslist.projections.GameMinProjection;
-import com.lucas.dslist.repositories.GameRepository;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,4 +38,10 @@ public class GameController {
         return ResponseEntity.ok(replacementDTO);
     }
 
+    @PutMapping(value = "/new")
+    public ResponseEntity<GenericResponseDTO> newGame(@RequestBody NewGameDTO dto){
+        Game game = gameService.newGame(dto);
+        GenericResponseDTO response = new GenericResponseDTO("Jogo criado com Sucesso!", game.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 }

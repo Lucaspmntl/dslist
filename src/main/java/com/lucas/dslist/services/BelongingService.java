@@ -1,6 +1,5 @@
 package com.lucas.dslist.services;
 
-import com.lucas.dslist.models.Belonging;
 import com.lucas.dslist.models.BelongingPK;
 import com.lucas.dslist.models.Game;
 import com.lucas.dslist.models.GameList;

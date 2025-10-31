@@ -21,4 +21,14 @@ public interface BelongingRepository extends JpaRepository<Belonging, Long> {
             "WHERE list_id = :listId AND game_id = :gameId")
     void updateBelongingPosition(Long listId, Long gameId, Integer newPosition);
 
+    @Modifying
+    @Query(nativeQuery = true, value = "INSERT INTO TB_BELONGING " +
+            "(game_id, list_id, position) " +
+            "VALUES (:gameId, :listId, :position")
+    void newBelonging(long gameId, long listId, int position);
+
+    @Query(nativeQuery = true, value = "SELECT MAX(position) " +
+            "FROM TB_BELONGING " +
+            "WHERE LIST_ID = :listId")
+    Integer findMaxByListId(long listId);
 }
