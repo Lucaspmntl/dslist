@@ -1,0 +1,11 @@
+package com.lucas.dslist.exceptions;
+
+public class ResourceNotFoundException extends RuntimeException {
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+    public ResourceNotFoundException(){
+        super("Recurso não encontrado!");
+    }
+}

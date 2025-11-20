@@ -20,9 +20,16 @@ public class GameListController {
     @Autowired
     GameService gameService;
 
+
     @GetMapping
     public List<GameListDTO> findAll(){
         return gameListService.findAll();
+    }
+
+    @DeleteMapping(value = "/delete/{listId}")
+    public ResponseEntity<GenericResponseDTO> deleteListById(@PathVariable long listId){
+        GenericResponseDTO response = gameListService.deleteById(listId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/{listId}/games")

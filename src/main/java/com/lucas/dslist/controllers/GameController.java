@@ -4,6 +4,7 @@ import com.lucas.dslist.dto.*;
 import com.lucas.dslist.models.Game;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,11 @@ public class GameController {
         Game game = gameService.newGame(dto);
         GenericResponseDTO response = new GenericResponseDTO("Jogo criado com Sucesso!", game.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable long id){
+        gameService.deleteGameById(id);
+        return ResponseEntity.ok("Produto deletado com sucesso!");
     }
 }

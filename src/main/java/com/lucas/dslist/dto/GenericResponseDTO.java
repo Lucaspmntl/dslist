@@ -7,6 +7,8 @@ public class GenericResponseDTO {
     private String message;
     private long id;
 
+
+
     public String getMessage() {
         return message;
     }

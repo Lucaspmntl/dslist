@@ -7,13 +7,22 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BelongingRepository extends JpaRepository<Belonging, Long> {
 
-    @Query(nativeQuery = true, value = "SELECT LIST_ID\n" +
-            "FROM TB_BELONGING\n" +
-            "WHERE GAME_ID = :gameId")
-    Long findListByGameId(Long gameId);
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM TB_BELONGING " +
+            "WHERE LIST_ID = :listId")
+    void deleteAllByListId(Long listId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM TB_BELONGING " +
+            "WHERE LIST_ID = :listId")
+    List<BelongingProjection> findByListId(Long listId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM TB_BELONGING " +
+            "WHERE GAME_ID = :id")
+    Optional<BelongingProjection> findByGameId(Long id);
 
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE tb_belonging " +
@@ -21,14 +30,25 @@ public interface BelongingRepository extends JpaRepository<Belonging, Long> {
             "WHERE list_id = :listId AND game_id = :gameId")
     void updateBelongingPosition(Long listId, Long gameId, Integer newPosition);
 
-    @Modifying
-    @Query(nativeQuery = true, value = "INSERT INTO TB_BELONGING " +
-            "(game_id, list_id, position) " +
-            "VALUES (:gameId, :listId, :position")
-    void newBelonging(long gameId, long listId, int position);
-
     @Query(nativeQuery = true, value = "SELECT MAX(position) " +
             "FROM TB_BELONGING " +
             "WHERE LIST_ID = :listId")
-    Integer findMaxByListId(long listId);
+    Integer findMaxPositionByListId(Long listId);
+
+    @Query(nativeQuery = true, value = "SELECT DISTINCT LIST_ID FROM TB_BELONGING WHERE GAME_ID = :gameId")
+    List<Long> findListsWhereGameLocated(Long gameId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM TB_BELONGING WHERE GAME_ID = :id")
+    void deleteByGameId(Long id);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM TB_BELONGING WHERE GAME_ID = :gameId AND LIST_ID = :listId")
+    BelongingProjection findByGameAndList();
+
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE TB_BELONGING " +
+            "SET POSITION = POSITION - 1 " +
+            "WHERE POSITION > :position AND " +
+            "LIST_ID = :listId")
+    void reorderPositionSequence(Integer position, Long listId);
 }

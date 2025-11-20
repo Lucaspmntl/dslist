@@ -4,7 +4,9 @@ import com.lucas.dslist.dto.GameListDTO;
 import com.lucas.dslist.dto.GenericResponseDTO;
 import com.lucas.dslist.dto.NewGameListDTO;
 import com.lucas.dslist.dto.ReplacementDTO;
+import com.lucas.dslist.exceptions.ResourceNotFoundException;
 import com.lucas.dslist.models.GameList;
+import com.lucas.dslist.projections.BelongingProjection;
 import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.BelongingRepository;
 import com.lucas.dslist.repositories.GameListRepository;
@@ -26,6 +28,14 @@ public class GameListService {
 
     @Autowired
     BelongingRepository belongingRepository;
+
+    @Transactional
+    public GenericResponseDTO deleteById(long listId){
+        belongingRepository.deleteAllByListId(listId);
+
+        gameListRepository.deleteById(listId);
+        return new GenericResponseDTO("Lista deletada com sucesso!", listId);
+    }
 
     @Transactional
     public GameList newList(NewGameListDTO dto){

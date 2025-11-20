@@ -8,4 +8,5 @@ public interface BelongingProjection {
     Long getId();
     Game getGame();
     GameList getList();
+    Integer getPosition();
 }
