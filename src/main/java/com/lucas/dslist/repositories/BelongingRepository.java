@@ -16,13 +16,11 @@ public interface BelongingRepository extends JpaRepository<Belonging, Long> {
             "WHERE LIST_ID = :listId")
     void deleteAllByListId(Long listId);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM TB_BELONGING " +
-            "WHERE LIST_ID = :listId")
-    List<BelongingProjection> findByListId(Long listId);
 
     @Query(nativeQuery = true, value = "SELECT * FROM TB_BELONGING " +
             "WHERE GAME_ID = :id")
     Optional<BelongingProjection> findByGameId(Long id);
+
 
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE tb_belonging " +
@@ -30,20 +28,21 @@ public interface BelongingRepository extends JpaRepository<Belonging, Long> {
             "WHERE list_id = :listId AND game_id = :gameId")
     void updateBelongingPosition(Long listId, Long gameId, Integer newPosition);
 
+
     @Query(nativeQuery = true, value = "SELECT MAX(position) " +
             "FROM TB_BELONGING " +
             "WHERE LIST_ID = :listId")
     Integer findMaxPositionByListId(Long listId);
 
+
     @Query(nativeQuery = true, value = "SELECT DISTINCT LIST_ID FROM TB_BELONGING WHERE GAME_ID = :gameId")
     List<Long> findListsWhereGameLocated(Long gameId);
+
 
     @Modifying
     @Query(nativeQuery = true, value = "DELETE FROM TB_BELONGING WHERE GAME_ID = :id")
     void deleteByGameId(Long id);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM TB_BELONGING WHERE GAME_ID = :gameId AND LIST_ID = :listId")
-    BelongingProjection findByGameAndList();
 
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE TB_BELONGING " +

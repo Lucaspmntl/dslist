@@ -6,7 +6,6 @@ import com.lucas.dslist.models.Belonging;
 import com.lucas.dslist.models.Game;
 import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.projections.BelongingProjection;
-import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.BelongingRepository;
 import com.lucas.dslist.repositories.GameListRepository;
 import com.lucas.dslist.repositories.GameRepository;
@@ -30,33 +29,39 @@ public class GameService {
 
 
     @Transactional(readOnly = true)
-    public GameDTO findById(Long id){
-        Game result = gameRepository.findById(id).get();
-        return new GameDTO(result);
+    public GameDTO findById(Long gameId){
+
+        GameDTO result = gameRepository.findById(gameId)
+                .map(GameDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado com o ID " + gameId));
+
+        return result;
     }
 
 
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll(){
 
-        List<Game> list = gameRepository.findAll();
-        List<GameMinDTO> dtoList = list.
-                stream().
-                map(obj -> new GameMinDTO(obj)).
-                toList();
+        List<GameMinDTO> dtoList = gameRepository.findAll()
+                .stream()
+                .map(GameMinDTO::new)
+                .toList();
 
-        System.out.println();
         return dtoList;
     }
 
 
     @Transactional
     public List<GameMinDTO> findByList(Long listId){
-        List<GameMinProjection> list = gameRepository.searchByList(listId);
-        return list.
-                stream()
-                .map(obj -> new GameMinDTO(obj))
+        List<GameMinDTO> dtoList = gameRepository.searchByList(listId)
+                .stream()
+                .map(GameMinDTO::new)
                 .toList();
+
+        if (dtoList.isEmpty())
+            throw new ResourceNotFoundException("A lista de id " + listId + " não existe ou não contém jogos");
+
+        return dtoList;
     }
 
 
@@ -68,8 +73,11 @@ public class GameService {
         int nextPosition = (maxPosition == null) ? 0 : maxPosition+1;
 
         Optional<GameList> gameList = gameListRepository.findById(dto.getListId());
+        if (gameList.isEmpty())
+            throw new ResourceNotFoundException("O jogo não está alocado em uma lista!");
 
         belongingRepository.save(new Belonging(newGame, gameList.get(), nextPosition));
+
         return newGame;
     }
 

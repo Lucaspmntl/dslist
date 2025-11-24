@@ -28,8 +28,7 @@ public class GameListController {
 
     @DeleteMapping(value = "/delete/{listId}")
     public ResponseEntity<GenericResponseDTO> deleteListById(@PathVariable long listId){
-        GenericResponseDTO response = gameListService.deleteById(listId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(new GenericResponseDTO("Lista deletada com sucesso!", listId));
     }
 
     @GetMapping(value = "/{listId}/games")

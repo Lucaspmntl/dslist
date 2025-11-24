@@ -1,12 +1,10 @@
 package com.lucas.dslist.services;
 
 import com.lucas.dslist.dto.GameListDTO;
-import com.lucas.dslist.dto.GenericResponseDTO;
 import com.lucas.dslist.dto.NewGameListDTO;
 import com.lucas.dslist.dto.ReplacementDTO;
 import com.lucas.dslist.exceptions.ResourceNotFoundException;
 import com.lucas.dslist.models.GameList;
-import com.lucas.dslist.projections.BelongingProjection;
 import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.BelongingRepository;
 import com.lucas.dslist.repositories.GameListRepository;
@@ -22,25 +20,47 @@ public class GameListService {
 
     @Autowired
     GameListRepository gameListRepository;
-
     @Autowired
     GameRepository gameRepository;
-
     @Autowired
     BelongingRepository belongingRepository;
 
-    @Transactional
-    public GenericResponseDTO deleteById(long listId){
-        belongingRepository.deleteAllByListId(listId);
+    @Transactional(readOnly = true)
+    public List<GameListDTO> findAll(){
+        List<GameListDTO> dtoList = gameListRepository.findAll()
+                .stream()
+                .map(GameListDTO::new)
+                .toList();
 
-        gameListRepository.deleteById(listId);
-        return new GenericResponseDTO("Lista deletada com sucesso!", listId);
+        return dtoList;
     }
+
+
+    @Transactional(readOnly = true)
+    public GameListDTO findById(Long id){
+        GameListDTO dtoList = gameListRepository.findById(id)
+                .map(GameListDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException(""));
+
+        return dtoList;
+    }
+
+
+    @Transactional
+    public void deleteById(long listId){
+        gameListRepository.findById(listId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o ID " + listId));
+
+        belongingRepository.deleteAllByListId(listId);
+        gameListRepository.deleteById(listId);
+    }
+
 
     @Transactional
     public GameList newList(NewGameListDTO dto){
         return gameListRepository.save(new GameList(dto));
     }
+
 
     @Transactional(readOnly = false)
     public void moveGamePosition(ReplacementDTO moveObj) {
@@ -49,6 +69,9 @@ public class GameListService {
         Long sourcePosition = moveObj.getSourcePosition();
 
         List<GameMinProjection> list = gameRepository.searchByList(listId);
+
+        if (list.isEmpty())
+            throw new ResourceNotFoundException("Lista não encontrada com o ID: " + listId);
 
         GameMinProjection game = list.stream()
             .filter(e -> e.getPosition() == sourcePosition.intValue())
@@ -66,21 +89,4 @@ public class GameListService {
             belongingRepository.updateBelongingPosition(listId, targetGameId, i);
         }
     }
-
-    @Transactional(readOnly = true)
-    public GameListDTO findById(Long id){
-        GameList result = gameListRepository.findById(id).get();
-        return new GameListDTO(result);
-    }
-
-    @Transactional(readOnly = true)
-    public List<GameListDTO> findAll(){
-        List<GameList> list = gameListRepository.findAll();
-        List<GameListDTO> dtoList = list.
-                stream().
-                map(obj -> new GameListDTO(obj)).
-                toList();
-        return dtoList;
-    }
-
 }
