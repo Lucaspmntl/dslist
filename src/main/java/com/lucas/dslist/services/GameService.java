@@ -74,7 +74,7 @@ public class GameService {
 
         Optional<GameList> gameList = gameListRepository.findById(dto.getListId());
         if (gameList.isEmpty())
-            throw new ResourceNotFoundException("O jogo não está alocado em uma lista!");
+            throw new ResourceNotFoundException("A lista com o Id " + dto.getListId() + " não existe");
 
         belongingRepository.save(new Belonging(newGame, gameList.get(), nextPosition));
 
@@ -102,5 +102,39 @@ public class GameService {
         }
 
         belongingRepository.deleteByGameId(id);
+    }
+
+    @Transactional
+    public GameDTO update(GameDTO dto, long gameId){
+
+        Game updatedGame = gameRepository.findById(gameId)
+                .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado com o Id " + gameId));
+
+        if (dto.getGenre() != null)
+            updatedGame.setGenre(dto.getGenre());
+
+        if (dto.getImgUrl() != null)
+            updatedGame.setImgUrl(dto.getImgUrl());
+
+        if (dto.getScore() != null)
+            updatedGame.setScore(dto.getScore());
+
+        if (dto.getPlatforms() != null)
+            updatedGame.setPlatforms(dto.getPlatforms());
+
+        if (dto.getTitle() != null)
+            updatedGame.setTitle(dto.getTitle());
+
+        if (dto.getLongDescription() != null)
+            updatedGame.setLongDescription(dto.getLongDescription());
+
+        if (dto.getShortDescription() != null)
+            updatedGame.setShortDescription(dto.getShortDescription());
+
+        if (dto.getYear() != null)
+            updatedGame.setYear(dto.getYear());
+
+        gameRepository.save(updatedGame);
+        return new GameDTO(updatedGame);
     }
 }

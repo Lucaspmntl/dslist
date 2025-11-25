@@ -41,10 +41,18 @@ public class GameListController {
         return gameListService.findById(listId);
     }
 
-    @PutMapping(value = "/new")
+    @PostMapping(value = "/new")
     public ResponseEntity<GenericResponseDTO> newList(@RequestBody NewGameListDTO dto){
         GameList newList = gameListService.newList(dto);
         GenericResponseDTO response = new GenericResponseDTO("Lista criada com sucesso!", newList.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping(value = "/{listId}")
+    public ResponseEntity<GameListDTO> update(@RequestBody GameListDTO dto,
+                                              @PathVariable Long listId){
+
+        GameListDTO updatedList = gameListService.update(dto, listId);
+        return ResponseEntity.ok(updatedList);
     }
 }

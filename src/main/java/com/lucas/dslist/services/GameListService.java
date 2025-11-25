@@ -40,7 +40,7 @@ public class GameListService {
     public GameListDTO findById(Long id){
         GameListDTO dtoList = gameListRepository.findById(id)
                 .map(GameListDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException(""));
+                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o Id " + id));
 
         return dtoList;
     }
@@ -88,5 +88,17 @@ public class GameListService {
             Long targetGameId = list.get(i).getId();
             belongingRepository.updateBelongingPosition(listId, targetGameId, i);
         }
+    }
+
+    @Transactional
+    public GameListDTO update(GameListDTO dto, Long listId){
+        GameList updatedList = gameListRepository.findById(listId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o Id " + listId));
+
+        if (dto.getName() != null)
+            updatedList.setName(dto.getName());
+
+        gameListRepository.save(updatedList);
+        return new GameListDTO(updatedList);
     }
 }

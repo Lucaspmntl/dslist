@@ -28,9 +28,9 @@ public class GameController {
         return gameService.findAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public GameDTO findById(@PathVariable Long id){
-        return gameService.findById(id);
+    @GetMapping(value = "/{gameId}")
+    public GameDTO findById(@PathVariable Long gameId){
+        return gameService.findById(gameId);
     }
 
     @PostMapping(value = "/replacement")
@@ -39,16 +39,24 @@ public class GameController {
         return ResponseEntity.ok(replacementDTO);
     }
 
-    @PutMapping(value = "/new")
+    @PostMapping
     public ResponseEntity<GenericResponseDTO> newGame(@RequestBody NewGameDTO dto){
         Game game = gameService.newGame(dto);
         GenericResponseDTO response = new GenericResponseDTO("Jogo criado com Sucesso!", game.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id){
-        gameService.deleteGameById(id);
+    @DeleteMapping(value = "/{gameId}")
+    public ResponseEntity<String> deleteById(@PathVariable long gameId){
+        gameService.deleteGameById(gameId);
         return ResponseEntity.ok("Produto deletado com sucesso!");
+    }
+
+    @PutMapping(value = "/{gameId}")
+    public ResponseEntity<GameDTO> update(@RequestBody GameDTO dto,
+                                          @PathVariable long gameId){
+
+        GameDTO updatedGame = gameService.update(dto, gameId);
+        return ResponseEntity.ok(updatedGame);
     }
 }
