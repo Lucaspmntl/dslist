@@ -15,7 +15,7 @@ public class NewGameDTO {
 
     public NewGameDTO() {}
 
-    public NewGameDTO(int year, String title, String genre, String platforms, double score, String imgUrl, String shortDescription, String longDescription, long listId) {
+    public NewGameDTO(Integer year, String title, String genre, String platforms, Double score, String imgUrl, String shortDescription, String longDescription, Long listId) {
         this.year = year;
         this.title = title;
         this.genre = genre;
@@ -32,10 +32,10 @@ public class NewGameDTO {
     }
     //public void setListId(long listId) {this.listId = listId;}
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -60,10 +60,10 @@ public class NewGameDTO {
         this.platforms = platforms;
     }
 
-    public double getScore() {
+    public Double getScore() {
         return score;
     }
-    public void setScore(double score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 

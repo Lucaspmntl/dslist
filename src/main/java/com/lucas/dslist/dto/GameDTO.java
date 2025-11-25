@@ -1,11 +1,7 @@
 package com.lucas.dslist.dto;
 
 import com.lucas.dslist.models.Game;
-import jakarta.validation.constraints.Max;
 import org.springframework.beans.BeanUtils;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class GameDTO {
     
@@ -17,11 +13,11 @@ public class GameDTO {
     private String imgUrl;
     private Long id;
     private String shortDescription;
-    private String longDescription;
+    private String LongDescription;
 
     public GameDTO (){}
 
-    public GameDTO(int year, String title, String genre, String platforms, double score, String imgUrl, long id, String shortDescription, String longDescription) {
+    public GameDTO(Integer year, String title, String genre, String platforms, Double score, String imgUrl, Long id, String shortDescription, String LongDescription) {
         this.year = year;
         this.title = title;
         this.genre = genre;
@@ -30,18 +26,18 @@ public class GameDTO {
         this.imgUrl = imgUrl;
         this.id = id;
         this.shortDescription = shortDescription;
-        this.longDescription = longDescription;
+        this.LongDescription = LongDescription;
     }
 
     public GameDTO (Game entity){
         BeanUtils.copyProperties(entity, this);
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -69,11 +65,11 @@ public class GameDTO {
         this.platforms = platforms;
     }
 
-    public double getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
@@ -85,11 +81,11 @@ public class GameDTO {
         this.imgUrl = imgUrl;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -102,10 +98,10 @@ public class GameDTO {
     }
 
     public String getLongDescription() {
-        return longDescription;
+        return LongDescription;
     }
 
-    public void setLongDescription(String longDescription) {
-        this.longDescription = longDescription;
+    public void setLongDescription(String LongDescription) {
+        this.LongDescription = LongDescription;
     }
 }

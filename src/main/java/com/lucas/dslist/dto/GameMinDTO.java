@@ -30,7 +30,7 @@ public class GameMinDTO {
     public GameMinDTO(){
     }
 
-    public GameMinDTO(long id, int year, String title, double score, String imgUrl, String shortDescription) {
+    public GameMinDTO(Long id, Integer year, String title, Double score, String imgUrl, String shortDescription) {
         this.id = id;
         this.year = year;
         this.title = title;
@@ -39,7 +39,7 @@ public class GameMinDTO {
         this.shortDescription = shortDescription;
     }
 
-    public long getId(){
+    public Long getId(){
         return id;
     }
 
@@ -47,7 +47,7 @@ public class GameMinDTO {
         return imgUrl;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
@@ -55,7 +55,7 @@ public class GameMinDTO {
         return title;
     }
 
-    public double getScore() {
+    public Double getScore() {
         return score;
     }
 

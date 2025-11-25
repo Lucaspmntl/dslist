@@ -16,11 +16,11 @@ public class GenericResponseDTO {
         this.message = message;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public GenericResponseDTO(String message, long id) {
+    public GenericResponseDTO(String message, Long id) {
         this.message = message;
         this.id = id;
     }
