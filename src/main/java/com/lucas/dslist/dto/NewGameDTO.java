@@ -3,15 +3,15 @@ package com.lucas.dslist.dto;
 import java.util.Objects;
 
 public class NewGameDTO {
-    private int year;
+    private Integer year;
     private String title;
     private String genre;
     private String platforms;
-    private double score;
+    private Double score;
     private String imgUrl;
     private String shortDescription;
     private String longDescription;
-    private long listId;
+    private Long listId;
 
     public NewGameDTO() {}
 

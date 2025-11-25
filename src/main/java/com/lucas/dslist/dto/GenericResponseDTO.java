@@ -5,7 +5,7 @@ import java.util.Objects;
 public class GenericResponseDTO {
 
     private String message;
-    private long id;
+    private Long id;
 
 
 

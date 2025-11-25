@@ -4,10 +4,10 @@ import com.lucas.dslist.models.Game;
 import com.lucas.dslist.projections.GameMinProjection;
 
 public class GameMinDTO {
-    private long id;
-    private int year;
+    private Long id;
+    private Integer year;
     private String title;
-    private double score;
+    private Double score;
     private String imgUrl;
     private String shortDescription;
 

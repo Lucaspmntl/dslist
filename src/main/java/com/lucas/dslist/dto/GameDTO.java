@@ -1,21 +1,25 @@
 package com.lucas.dslist.dto;
 
 import com.lucas.dslist.models.Game;
+import jakarta.validation.constraints.Max;
 import org.springframework.beans.BeanUtils;
 
-public class GameDTO {
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-    private int year;
+public class GameDTO {
+    
+    private Integer year;
     private String title;
     private String genre;
     private String platforms;
-    private double score;
+    private Double score;
     private String imgUrl;
-    private long id;
+    private Long id;
     private String shortDescription;
     private String longDescription;
 
-    GameDTO (){}
+    public GameDTO (){}
 
     public GameDTO(int year, String title, String genre, String platforms, double score, String imgUrl, long id, String shortDescription, String longDescription) {
         this.year = year;
