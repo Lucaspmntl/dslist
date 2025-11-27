@@ -66,7 +66,7 @@ public class GameService {
 
 
     @Transactional
-    public Game newGame(NewGameDTO dto){
+    public Game newGame(NewGameRequestDTO dto){
         Game newGame = gameRepository.save(new Game(dto));
 
         Integer maxPosition = belongingRepository.findMaxPositionByListId(dto.getListId());
@@ -105,7 +105,7 @@ public class GameService {
     }
 
     @Transactional
-    public GameDTO update(GameDTO dto, long gameId){
+    public GameDTO update(UpdateGameRequestDTO dto, long gameId){
 
         Game updatedGame = gameRepository.findById(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado com o Id " + gameId));

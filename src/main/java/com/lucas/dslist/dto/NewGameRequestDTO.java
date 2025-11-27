@@ -2,7 +2,8 @@ package com.lucas.dslist.dto;
 
 import java.util.Objects;
 
-public class NewGameDTO {
+public class NewGameRequestDTO {
+
     private Integer year;
     private String title;
     private String genre;
@@ -13,9 +14,9 @@ public class NewGameDTO {
     private String longDescription;
     private Long listId;
 
-    public NewGameDTO() {}
+    public NewGameRequestDTO() {}
 
-    public NewGameDTO(Integer year, String title, String genre, String platforms, Double score, String imgUrl, String shortDescription, String longDescription, Long listId) {
+    public NewGameRequestDTO(Integer year, String title, String genre, String platforms, Double score, String imgUrl, String shortDescription, String longDescription, Long listId) {
         this.year = year;
         this.title = title;
         this.genre = genre;
@@ -91,7 +92,7 @@ public class NewGameDTO {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        NewGameDTO that = (NewGameDTO) o;
+        NewGameRequestDTO that = (NewGameRequestDTO) o;
         return year == that.year && Double.compare(score, that.score) == 0 && Objects.equals(title, that.title) && Objects.equals(genre, that.genre) && Objects.equals(platforms, that.platforms) && Objects.equals(imgUrl, that.imgUrl) && Objects.equals(shortDescription, that.shortDescription) && Objects.equals(longDescription, that.longDescription);
     }
 

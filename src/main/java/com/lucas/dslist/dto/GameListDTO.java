@@ -1,6 +1,8 @@
 package com.lucas.dslist.dto;
 
 import com.lucas.dslist.models.GameList;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
@@ -8,6 +10,9 @@ import java.util.Objects;
 public class GameListDTO {
 
     private Long id;
+
+    @NotBlank
+    @Size(min = 2, max = 20, message = "O nome deve ter entre 2 e 20 caracteres.")
     private String name;
 
     public GameListDTO(){}

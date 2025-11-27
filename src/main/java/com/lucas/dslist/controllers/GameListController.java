@@ -4,6 +4,7 @@ import com.lucas.dslist.dto.*;
 import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,14 +43,14 @@ public class GameListController {
     }
 
     @PostMapping(value = "/new")
-    public ResponseEntity<GenericResponseDTO> newList(@RequestBody NewGameListDTO dto){
+    public ResponseEntity<GenericResponseDTO> newList(@Valid @RequestBody NewGameListDTO dto){
         GameList newList = gameListService.newList(dto);
         GenericResponseDTO response = new GenericResponseDTO("Lista criada com sucesso!", newList.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping(value = "/{listId}")
-    public ResponseEntity<GameListDTO> update(@RequestBody GameListDTO dto,
+    public ResponseEntity<GameListDTO> update(@Valid @RequestBody GameListDTO dto,
                                               @PathVariable Long listId){
 
         GameListDTO updatedList = gameListService.update(dto, listId);

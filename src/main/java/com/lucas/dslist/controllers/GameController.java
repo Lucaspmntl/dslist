@@ -4,7 +4,7 @@ import com.lucas.dslist.dto.*;
 import com.lucas.dslist.models.Game;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
-import org.apache.coyote.Response;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +34,13 @@ public class GameController {
     }
 
     @PostMapping(value = "/replacement")
-    public ResponseEntity<ReplacementDTO> movePosition (@RequestBody ReplacementDTO replacementDTO){
-        gameListService.moveGamePosition(replacementDTO);
-        return ResponseEntity.ok(replacementDTO);
+    public ResponseEntity<ReplacementRequestDTO> movePosition (@Valid @RequestBody ReplacementRequestDTO dto){
+        gameListService.moveGamePosition(dto);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<GenericResponseDTO> newGame(@RequestBody NewGameDTO dto){
+    public ResponseEntity<GenericResponseDTO> newGame(@Valid @RequestBody NewGameRequestDTO dto){
         Game game = gameService.newGame(dto);
         GenericResponseDTO response = new GenericResponseDTO("Jogo criado com Sucesso!", game.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -53,7 +53,7 @@ public class GameController {
     }
 
     @PutMapping(value = "/{gameId}")
-    public ResponseEntity<GameDTO> update(@RequestBody GameDTO dto,
+    public ResponseEntity<GameDTO> update(@Valid @RequestBody UpdateGameRequestDTO dto,
                                           @PathVariable long gameId){
 
         GameDTO updatedGame = gameService.update(dto, gameId);

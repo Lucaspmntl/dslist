@@ -2,7 +2,7 @@ package com.lucas.dslist.services;
 
 import com.lucas.dslist.dto.GameListDTO;
 import com.lucas.dslist.dto.NewGameListDTO;
-import com.lucas.dslist.dto.ReplacementDTO;
+import com.lucas.dslist.dto.ReplacementRequestDTO;
 import com.lucas.dslist.exceptions.ResourceNotFoundException;
 import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.projections.GameMinProjection;
@@ -63,7 +63,7 @@ public class GameListService {
 
 
     @Transactional(readOnly = false)
-    public void moveGamePosition(ReplacementDTO moveObj) {
+    public void moveGamePosition(ReplacementRequestDTO moveObj) {
         Long listId = moveObj.getListId();
         Long targetPosition = moveObj.getTargetPosition();
         Long sourcePosition = moveObj.getSourcePosition();

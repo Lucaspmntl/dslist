@@ -1,9 +1,7 @@
 package com.lucas.dslist.models;
 
-import com.lucas.dslist.dto.NewGameDTO;
+import com.lucas.dslist.dto.NewGameRequestDTO;
 import jakarta.persistence.*;
-import org.springframework.data.convert.DtoInstantiatingConverter;
-import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "tb_game")
@@ -43,7 +41,7 @@ public class Game {
         this.id = id;
     };
 
-    public Game(NewGameDTO dto){
+    public Game(NewGameRequestDTO dto){
         this.longDescription = dto.getLongDescription();
         this.shortDescription = dto.getShortDescription();
         this.imgUrl = dto.getImgUrl();

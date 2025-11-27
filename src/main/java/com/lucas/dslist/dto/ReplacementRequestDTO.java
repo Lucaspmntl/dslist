@@ -1,17 +1,14 @@
 package com.lucas.dslist.dto;
 
-import com.lucas.dslist.models.Game;
-import org.antlr.v4.runtime.misc.NotNull;
-
-public class ReplacementDTO {
+public class ReplacementRequestDTO {
 
     private Long sourcePosition;
     private Long targetPosition;
     private Long listId;
 
-    public ReplacementDTO(){}
+    public ReplacementRequestDTO(){}
 
-    public ReplacementDTO(Long sourcePosition, Long targetPosition, Long listId) {
+    public ReplacementRequestDTO(Long sourcePosition, Long targetPosition, Long listId) {
         this.sourcePosition = sourcePosition;
         this.targetPosition = targetPosition;
         this.listId = listId;
