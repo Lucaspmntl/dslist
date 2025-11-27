@@ -1,61 +1,31 @@
 package com.lucas.dslist.models;
 
-import com.lucas.dslist.dto.GameListDTO;
-import com.lucas.dslist.dto.NewGameListDTO;
+import com.lucas.dslist.dto.list.GameListDTO;
+import com.lucas.dslist.dto.list.NewGameListDTO;
 import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Objects;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Setter
+@Getter
 @Entity
 @Table(name = "tb_game_list")
 public class GameList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    private User userId;
+
+    @Column(name = "name")
     private String name;
 
-    public GameList (){}
-
-    public GameList(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public GameList(GameListDTO dto){
-        this.id = dto.getId();
-        this.name = dto.getName();
-    }
-
-    public GameList(NewGameListDTO dto){
-        this.name = dto.getName();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        GameList gameList = (GameList) o;
-        return Objects.equals(id, gameList.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+    @Column(columnDefinition = "TEXT", length = 100)
+    private String description;
 }

@@ -1,10 +1,14 @@
 package com.lucas.dslist.models;
 
+import com.lucas.dslist.dto.user.NewUserRequestDTO;
+import com.lucas.dslist.dto.user.UserResponseDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +25,9 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(name = "nick_name")
+    private String nickName;
+
     @Column(name = "first_name", length = 100)
     private String firstName;
 
@@ -36,9 +43,18 @@ public class User {
     @Column
     private String password;
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "is_active")
     private Boolean active = true;
+
+    public User (UserResponseDTO dto){
+        BeanUtils.copyProperties(dto, this);
+    }
+
+    public User(NewUserRequestDTO dto){
+        BeanUtils.copyProperties(dto, this);
+    }
 }
