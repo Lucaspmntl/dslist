@@ -1,6 +1,10 @@
 package com.lucas.dslist.controllers;
 
 import com.lucas.dslist.dto.*;
+import com.lucas.dslist.dto.game.GameMinDTO;
+import com.lucas.dslist.dto.list.GameListDTO;
+import com.lucas.dslist.dto.list.NewGameListDTO;
+import com.lucas.dslist.dto.list.UpdateListRequestDTO;
 import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
@@ -50,7 +54,7 @@ public class GameListController {
     }
 
     @PutMapping(value = "/{listId}")
-    public ResponseEntity<GameListDTO> update(@Valid @RequestBody GameListDTO dto,
+    public ResponseEntity<GameListDTO> update(@Valid @RequestBody UpdateListRequestDTO dto,
                                               @PathVariable Long listId){
 
         GameListDTO updatedList = gameListService.update(dto, listId);

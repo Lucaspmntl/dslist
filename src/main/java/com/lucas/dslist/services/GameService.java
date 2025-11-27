@@ -1,6 +1,9 @@
 package com.lucas.dslist.services;
 
-import com.lucas.dslist.dto.*;
+import com.lucas.dslist.dto.game.GameDTO;
+import com.lucas.dslist.dto.game.GameMinDTO;
+import com.lucas.dslist.dto.game.NewGameRequestDTO;
+import com.lucas.dslist.dto.game.UpdateGameRequestDTO;
 import com.lucas.dslist.exceptions.ResourceNotFoundException;
 import com.lucas.dslist.models.Belonging;
 import com.lucas.dslist.models.Game;

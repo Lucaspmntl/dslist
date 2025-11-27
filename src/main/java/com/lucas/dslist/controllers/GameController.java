@@ -1,6 +1,10 @@
 package com.lucas.dslist.controllers;
 
 import com.lucas.dslist.dto.*;
+import com.lucas.dslist.dto.game.GameDTO;
+import com.lucas.dslist.dto.game.GameMinDTO;
+import com.lucas.dslist.dto.game.NewGameRequestDTO;
+import com.lucas.dslist.dto.game.UpdateGameRequestDTO;
 import com.lucas.dslist.models.Game;
 import com.lucas.dslist.services.GameListService;
 import com.lucas.dslist.services.GameService;
@@ -34,7 +38,7 @@ public class GameController {
     }
 
     @PostMapping(value = "/replacement")
-    public ResponseEntity<ReplacementRequestDTO> movePosition (@Valid @RequestBody ReplacementRequestDTO dto){
+    public ResponseEntity<ValidationErrorResponseDTO.ReplacementRequestDTO> movePosition (@Valid @RequestBody ValidationErrorResponseDTO.ReplacementRequestDTO dto){
         gameListService.moveGamePosition(dto);
         return ResponseEntity.ok(dto);
     }

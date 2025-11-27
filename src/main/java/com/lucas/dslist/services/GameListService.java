@@ -1,8 +1,9 @@
 package com.lucas.dslist.services;
 
-import com.lucas.dslist.dto.GameListDTO;
-import com.lucas.dslist.dto.NewGameListDTO;
-import com.lucas.dslist.dto.ReplacementRequestDTO;
+import com.lucas.dslist.dto.ValidationErrorResponseDTO;
+import com.lucas.dslist.dto.list.GameListDTO;
+import com.lucas.dslist.dto.list.NewGameListDTO;
+import com.lucas.dslist.dto.list.UpdateListRequestDTO;
 import com.lucas.dslist.exceptions.ResourceNotFoundException;
 import com.lucas.dslist.models.GameList;
 import com.lucas.dslist.projections.GameMinProjection;
@@ -63,7 +64,7 @@ public class GameListService {
 
 
     @Transactional(readOnly = false)
-    public void moveGamePosition(ReplacementRequestDTO moveObj) {
+    public void moveGamePosition(ValidationErrorResponseDTO.ReplacementRequestDTO moveObj) {
         Long listId = moveObj.getListId();
         Long targetPosition = moveObj.getTargetPosition();
         Long sourcePosition = moveObj.getSourcePosition();
@@ -91,12 +92,15 @@ public class GameListService {
     }
 
     @Transactional
-    public GameListDTO update(GameListDTO dto, Long listId){
+    public GameListDTO update(UpdateListRequestDTO dto, Long listId){
         GameList updatedList = gameListRepository.findById(listId)
                 .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o Id " + listId));
 
         if (dto.getName() != null)
             updatedList.setName(dto.getName());
+
+        if (dto.getDescription() != null)
+            updatedList.setDescription(dto.getDescription());
 
         gameListRepository.save(updatedList);
         return new GameListDTO(updatedList);
