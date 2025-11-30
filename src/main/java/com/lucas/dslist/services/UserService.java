@@ -59,6 +59,9 @@ public class UserService {
         User updatedUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o id " + userId));
 
+        if (dto.getDescription() != null)
+            updatedUser.setDescription(dto.getDescription());
+
         if (dto.getEmail() != null)
             updatedUser.setEmail(dto.getEmail());
 

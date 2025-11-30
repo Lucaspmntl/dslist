@@ -2,6 +2,7 @@ package com.lucas.dslist.dto.game;
 
 import com.lucas.dslist.models.Game;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,11 +26,10 @@ public class UpdateGameRequestDTO {
     private String platforms;
 
     @Max(value = 10, message = "O valor máximo do score deve ser 10.")
+    @Positive(message = "O valor de score deve ser maior do que zero.")
     private Double score;
 
     private String imgUrl;
-
-    private Long id;
 
     @Size(max = 50, min = 10, message = "A descrição curta deve conter entre 10 e 50 caracteres.")
     private String shortDescription;

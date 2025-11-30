@@ -1,7 +1,7 @@
 package com.lucas.dslist.controllers;
 
 import com.lucas.dslist.dto.*;
-import com.lucas.dslist.dto.game.GameMinDTO;
+import com.lucas.dslist.dto.game.GameMinResponseDTO;
 import com.lucas.dslist.dto.list.GameListDTO;
 import com.lucas.dslist.dto.list.NewGameListDTO;
 import com.lucas.dslist.dto.list.UpdateListRequestDTO;
@@ -27,31 +27,34 @@ public class GameListController {
 
 
     @GetMapping
-    public List<GameListDTO> findAll(){
-        return gameListService.findAll();
+    public ResponseEntity<List<GameListDTO>> findAll(){
+        List<GameListDTO> lists = gameListService.findAll();
+
+        return ResponseEntity.ok(lists);
     }
 
-    @DeleteMapping(value = "/delete/{listId}")
-    public ResponseEntity<GenericResponseDTO> deleteListById(@PathVariable long listId){
-        return ResponseEntity.ok().body(new GenericResponseDTO("Lista deletada com sucesso!", listId));
+
+    @DeleteMapping(value = "/{listId}")
+    public ResponseEntity<MessageDTO> deleteListById(@PathVariable Long listId){
+        return ResponseEntity.ok().body(new MessageDTO("Lista com ID " + listId + " com sucesso!"));
     }
 
-    @GetMapping(value = "/{listId}/games")
-    public List<GameMinDTO> findByList(@PathVariable Long listId){
-        return gameService.findByList(listId);
-    }
 
     @GetMapping(value = "/{listId}")
-    public GameListDTO findById(@PathVariable Long listId){
-        return gameListService.findById(listId);
+    public ResponseEntity<GameListDTO> findById(@PathVariable Long listId){
+        GameListDTO list = gameListService.findById(listId);
+
+        return ResponseEntity.ok(list);
     }
 
+
     @PostMapping(value = "/new")
-    public ResponseEntity<GenericResponseDTO> newList(@Valid @RequestBody NewGameListDTO dto){
-        GameList newList = gameListService.newList(dto);
-        GenericResponseDTO response = new GenericResponseDTO("Lista criada com sucesso!", newList.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<GameListDTO> newList(@Valid @RequestBody NewGameListDTO dto){
+        GameListDTO createdList = gameListService.newList(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdList);
     }
+
 
     @PutMapping(value = "/{listId}")
     public ResponseEntity<GameListDTO> update(@Valid @RequestBody UpdateListRequestDTO dto,

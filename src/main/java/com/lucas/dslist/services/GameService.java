@@ -1,7 +1,7 @@
 package com.lucas.dslist.services;
 
-import com.lucas.dslist.dto.game.GameDTO;
-import com.lucas.dslist.dto.game.GameMinDTO;
+import com.lucas.dslist.dto.game.GameMaxResponseDTO;
+import com.lucas.dslist.dto.game.GameMinResponseDTO;
 import com.lucas.dslist.dto.game.NewGameRequestDTO;
 import com.lucas.dslist.dto.game.UpdateGameRequestDTO;
 import com.lucas.dslist.exceptions.ResourceNotFoundException;
@@ -12,13 +12,12 @@ import com.lucas.dslist.projections.BelongingProjection;
 import com.lucas.dslist.repositories.BelongingRepository;
 import com.lucas.dslist.repositories.GameListRepository;
 import com.lucas.dslist.repositories.GameRepository;
+import com.lucas.dslist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
 public class GameService {
@@ -29,59 +28,54 @@ public class GameService {
     private GameListRepository gameListRepository;
     @Autowired
     private BelongingRepository belongingRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Transactional(readOnly = true)
-    public GameDTO findById(Long gameId){
+    public GameMaxResponseDTO findById(Long gameId){
 
-        GameDTO result = gameRepository.findById(gameId)
-                .map(GameDTO::new)
+        GameMaxResponseDTO games = gameRepository.findById(gameId)
+                .map(GameMaxResponseDTO::new)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado com o ID " + gameId));
 
-        return result;
+        return games;
     }
 
 
     @Transactional(readOnly = true)
-    public List<GameMinDTO> findAll(){
+    public List<GameMinResponseDTO> findAll(){
 
-        List<GameMinDTO> dtoList = gameRepository.findAll()
+        List<GameMinResponseDTO> games = gameRepository.findAll()
                 .stream()
-                .map(GameMinDTO::new)
+                .map(GameMinResponseDTO::new)
                 .toList();
 
-        return dtoList;
+        return games;
     }
 
 
     @Transactional
-    public List<GameMinDTO> findByList(Long listId){
-        List<GameMinDTO> dtoList = gameRepository.searchByList(listId)
+    public List<GameMinResponseDTO> findByList(Long listId){
+        List<GameMinResponseDTO> games = gameRepository.searchByList(listId)
                 .stream()
-                .map(GameMinDTO::new)
+                .map(GameMinResponseDTO::new)
                 .toList();
 
-        if (dtoList.isEmpty())
+        if (games.isEmpty())
             throw new ResourceNotFoundException("A lista de id " + listId + " não existe ou não contém jogos");
 
-        return dtoList;
+        return games;
     }
 
 
     @Transactional
-    public Game newGame(NewGameRequestDTO dto){
+    public GameMaxResponseDTO newGame(NewGameRequestDTO dto){
         Game newGame = gameRepository.save(new Game(dto));
 
-        Integer maxPosition = belongingRepository.findMaxPositionByListId(dto.getListId());
-        int nextPosition = (maxPosition == null) ? 0 : maxPosition+1;
 
-        Optional<GameList> gameList = gameListRepository.findById(dto.getListId());
-        if (gameList.isEmpty())
-            throw new ResourceNotFoundException("A lista com o Id " + dto.getListId() + " não existe");
 
-        belongingRepository.save(new Belonging(newGame, gameList.get(), nextPosition));
-
-        return newGame;
+        return new GameMaxResponseDTO(newGame);
     }
 
 
@@ -108,7 +102,7 @@ public class GameService {
     }
 
     @Transactional
-    public GameDTO update(UpdateGameRequestDTO dto, long gameId){
+    public GameMaxResponseDTO update(UpdateGameRequestDTO dto, long gameId){
 
         Game updatedGame = gameRepository.findById(gameId)
                 .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado com o Id " + gameId));
@@ -138,6 +132,27 @@ public class GameService {
             updatedGame.setYear(dto.getYear());
 
         gameRepository.save(updatedGame);
-        return new GameDTO(updatedGame);
+        return new GameMaxResponseDTO(updatedGame);
+    }
+
+    public void addGameInList(List<Long> gameId, Long listId){
+        GameList list = gameListRepository.findById(listId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o ID " + listId));
+
+        // User user = userRepository.findById(userId)
+        //        .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrada com o ID " + userId));
+
+        for (Long id : gameId){
+            boolean notInTheList = belongingRepository.findByGameAndList(id, listId).isEmpty();
+
+            Game game = gameRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Jogo não encontrado com o ID " + id));
+
+            Integer maxPosition = belongingRepository.findMaxPositionByListId(listId);
+            int nextPosition = (maxPosition == null) ? 0 : maxPosition+1;
+
+            if (notInTheList)
+                belongingRepository.save(new Belonging(game, list, nextPosition));
+        }
     }
 }

@@ -26,4 +26,7 @@ public class UpdateUserRequestDTO {
     @Email(message = "Erro de formatação no email, verifique o campo e tente novamente.")
     private String email;
 
+    @Size(max = 255, message = "O limite para a descrição é de 255 caracteres.")
+    private String description;
+
 }

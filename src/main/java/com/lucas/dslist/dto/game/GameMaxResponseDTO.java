@@ -10,7 +10,7 @@ import org.springframework.beans.BeanUtils;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameDTO {
+public class GameMaxResponseDTO {
 
     @Max(value = 2025, message = "Ano inválido, máximo: 2025.")
     private Integer year;
@@ -42,7 +42,7 @@ public class GameDTO {
     private String LongDescription;
 
 
-    public GameDTO(Game entity) {
+    public GameMaxResponseDTO(Game entity) {
         BeanUtils.copyProperties(entity, this);
     }
 }

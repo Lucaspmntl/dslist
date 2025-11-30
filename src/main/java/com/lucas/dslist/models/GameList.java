@@ -4,6 +4,7 @@ import com.lucas.dslist.dto.list.GameListDTO;
 import com.lucas.dslist.dto.list.NewGameListDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,4 +29,13 @@ public class GameList {
 
     @Column(columnDefinition = "TEXT", length = 100)
     private String description;
+
+
+    public GameList(GameListDTO dto){
+        BeanUtils.copyProperties(dto,this);
+    }
+
+    public GameList(NewGameListDTO dto){
+        BeanUtils.copyProperties(dto, this);
+    }
 }

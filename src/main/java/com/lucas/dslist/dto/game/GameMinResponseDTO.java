@@ -6,11 +6,12 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameMinDTO {
+public class GameMinResponseDTO {
 
     private Long id;
 
@@ -32,11 +33,11 @@ public class GameMinDTO {
     @NotBlank
     private String shortDescription;
 
-    public GameMinDTO(GameMinProjection projection){
-        id = projection.getId();
-        year = projection.getGameYear();
-        imgUrl = projection.getImgUrl();
-        title = projection.getTitle();
-        shortDescription = projection.getShortDescription();
+    public GameMinResponseDTO(GameMinProjection projection){
+        BeanUtils.copyProperties(projection, this);
+    }
+
+    public GameMinResponseDTO(Game game){
+        BeanUtils.copyProperties(game, this);
     }
 }

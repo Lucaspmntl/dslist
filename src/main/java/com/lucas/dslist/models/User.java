@@ -43,6 +43,9 @@ public class User {
     @Column
     private String password;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

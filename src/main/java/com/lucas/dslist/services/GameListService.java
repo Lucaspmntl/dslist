@@ -1,6 +1,6 @@
 package com.lucas.dslist.services;
 
-import com.lucas.dslist.dto.ValidationErrorResponseDTO;
+import com.lucas.dslist.dto.ReplacementRequestDTO;
 import com.lucas.dslist.dto.list.GameListDTO;
 import com.lucas.dslist.dto.list.NewGameListDTO;
 import com.lucas.dslist.dto.list.UpdateListRequestDTO;
@@ -10,6 +10,7 @@ import com.lucas.dslist.projections.GameMinProjection;
 import com.lucas.dslist.repositories.BelongingRepository;
 import com.lucas.dslist.repositories.GameListRepository;
 import com.lucas.dslist.repositories.GameRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,24 +27,25 @@ public class GameListService {
     @Autowired
     BelongingRepository belongingRepository;
 
+
     @Transactional(readOnly = true)
     public List<GameListDTO> findAll(){
-        List<GameListDTO> dtoList = gameListRepository.findAll()
+        List<GameListDTO> lists = gameListRepository.findAll()
                 .stream()
                 .map(GameListDTO::new)
                 .toList();
 
-        return dtoList;
+        return lists;
     }
 
 
     @Transactional(readOnly = true)
-    public GameListDTO findById(Long id){
-        GameListDTO dtoList = gameListRepository.findById(id)
+    public GameListDTO findById(Long listId){
+        GameListDTO list = gameListRepository.findById(listId)
                 .map(GameListDTO::new)
-                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o Id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Lista não encontrada com o Id " + listId));
 
-        return dtoList;
+        return list;
     }
 
 
@@ -58,13 +60,15 @@ public class GameListService {
 
 
     @Transactional
-    public GameList newList(NewGameListDTO dto){
-        return gameListRepository.save(new GameList(dto));
+    public GameListDTO newList(NewGameListDTO dto){
+        GameList createdList = gameListRepository.save(new GameList(dto));
+
+        return new GameListDTO(createdList);
     }
 
 
     @Transactional(readOnly = false)
-    public void moveGamePosition(ValidationErrorResponseDTO.ReplacementRequestDTO moveObj) {
+    public void moveGamePosition(@Valid ReplacementRequestDTO moveObj) {
         Long listId = moveObj.getListId();
         Long targetPosition = moveObj.getTargetPosition();
         Long sourcePosition = moveObj.getSourcePosition();
@@ -91,6 +95,7 @@ public class GameListService {
         }
     }
 
+
     @Transactional
     public GameListDTO update(UpdateListRequestDTO dto, Long listId){
         GameList updatedList = gameListRepository.findById(listId)
@@ -103,6 +108,7 @@ public class GameListService {
             updatedList.setDescription(dto.getDescription());
 
         gameListRepository.save(updatedList);
+
         return new GameListDTO(updatedList);
     }
 }
