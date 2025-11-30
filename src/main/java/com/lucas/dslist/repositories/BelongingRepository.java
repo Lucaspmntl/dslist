@@ -50,4 +50,12 @@ public interface BelongingRepository extends JpaRepository<Belonging, Long> {
             "WHERE POSITION > :position AND " +
             "LIST_ID = :listId")
     void reorderPositionSequence(Integer position, Long listId);
+
+
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "SELECT FROM TB_BELONGING" +
+            "WHERE GAME_ID = :gameId" +
+            "AND LIST_ID = :listId")
+    List<BelongingProjection> findByGameAndList(Long gameId, Long listId);
 }
