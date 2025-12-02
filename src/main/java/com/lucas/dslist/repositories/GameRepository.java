@@ -5,7 +5,6 @@ import com.lucas.dslist.projections.GameMinProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 public interface GameRepository extends JpaRepository<Game, Long> {
@@ -20,13 +19,4 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             ORDER BY tb_belonging.position
             """)
     List<GameMinProjection> searchByList(Long listId);
-
-
-    @Query(nativeQuery = true, value = "SELECT tb_belonging.game_id\n" +
-            "from tb_belonging\n" +
-            "JOIN tb_game\n" +
-            "ON tb_belonging.game_id = tb_game.id\n" +
-            "where list_id = :listId and position = :position")
-    long searchByListAndPosition(long listId, long position);
-
 }
